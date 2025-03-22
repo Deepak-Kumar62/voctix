@@ -7,9 +7,8 @@ app.use(cors());
 app.use(express.json({ limit: "42kb" }));
 app.use(express.urlencoded({ limit: "42kb", extended: "true" }));
 
+import usersRoutes from "./routes/users.routes.js";
 
-app.get("/home", (req, res) => {
-  res.send("Hello world!");
-});
+app.use("/api/v1/users", usersRoutes);
 
 export default app;
