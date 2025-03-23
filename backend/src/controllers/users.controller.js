@@ -82,3 +82,9 @@ export const loginUser = async (req, res) => {
       .json({ success: false, message: "Something went wrong." });
   }
 };
+
+export const getUser = (req, res) => {
+  return res
+    .status(httpStatus.OK)
+    .json({ success: true, message: "User found.", data: req.user });
+};
