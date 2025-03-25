@@ -11,15 +11,12 @@ export const getUser = async () => {
 };
 
 export const login = async (credentials) => {
-  const response = await client.post("/login", credentials);
-  const user = await getUser();
-  return { message: response.message, user };
+  await client.post("/login", credentials);
 };
 
 export const register = async (userData) => {
   const response = await client.post("/register", userData);
-  const user = await getUser();
-  return { message: response.message, user };
+  return response.message;
 };
 
 // Logout user

@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import jwt from "jsonwebtoken";
-import User from "./model/user.model.js";
+import User from "../models/users.model.js";
 
 export const authUser = async (req, res, next) => {
   try {

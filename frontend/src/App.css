@@ -13,6 +13,7 @@
   align-items: center;
   padding-inline: 3rem;
   padding-block: 1rem;
+  color: white;
 }
 
 .landingpage-container nav h2{
@@ -31,6 +32,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: white;
 }
 
 .landingpage-main-container>div:nth-child(1) {

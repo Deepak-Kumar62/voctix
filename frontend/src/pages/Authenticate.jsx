@@ -3,17 +3,13 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import { AuthContext } from '../contexts/AuthContext';
 import { Snackbar } from '@mui/material';
+import AuthContext from '../contexts/AuthContext';
 
 
 
@@ -23,47 +19,45 @@ const defaultTheme = createTheme();
 
 export default function Authenticate() {
 
-
-
     const [username, setUsername] = React.useState();
     const [password, setPassword] = React.useState();
-    const [name, setName] = React.useState();
+    const [firstname, setFirstname] = React.useState();
+    const [lastname, setLastname] = React.useState();
+
     const [error, setError] = React.useState();
     const [message, setMessage] = React.useState();
 
 
     const [formState, setFormState] = React.useState(0);
-
     const [open, setOpen] = React.useState(false)
 
+    const { handleLogin, handleRegister } = React.useContext(AuthContext)
 
-    // const { handleRegister, handleLogin } = React.useContext(AuthContext);
+    let handleAuth = async () => {
+        try {
+            if (formState === 0) {
+                await handleLogin({ username, password })
+            }
 
-    // let handleAuth = async () => {
-    //     try {
-    //         if (formState === 0) {
+            if (formState === 1) {
+                let message = await handleRegister({ firstname, lastname, username, password });
+                setMessage(message);
 
-    //             let result = await handleLogin(username, password)
+                setUsername("");
+                setPassword("")
+                setFirstname("")
+                setLastname("")
+                setOpen(true);
+                setError("")
+                setFormState(0)
+            }
+        } catch (err) {
 
-
-    //         }
-    //         if (formState === 1) {
-    //             let result = await handleRegister(name, username, password);
-    //             console.log(result);
-    //             setUsername("");
-    //             setMessage(result);
-    //             setOpen(true);
-    //             setError("")
-    //             setFormState(0)
-    //             setPassword("")
-    //         }
-    //     } catch (err) {
-
-    //         console.log(err);
-    //         let message = (err.response.data.message);
-    //         setError(message);
-    //     }
-    // }
+            console.log(err);
+            // let message = (err.response.data.message);
+            setError(err.message);
+        }
+    }
 
 
     return (
@@ -116,9 +110,9 @@ export default function Authenticate() {
                                 id="firstname"
                                 label="Firstname"
                                 name="firstname"
-                                value={name}
+                                value={firstname}
                                 autoFocus
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={(e) => setFirstname(e.target.value)}
                             /> : <></>}
 
                             {formState === 1 ? <TextField
@@ -128,9 +122,9 @@ export default function Authenticate() {
                                 id="lastname"
                                 label="Lastname"
                                 name="lastname"
-                                value={name}
+                                value={lastname}
                                 autoFocus
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={(e) => setLastname(e.target.value)}
                             /> : <></>}
 
                             <TextField
@@ -165,6 +159,7 @@ export default function Authenticate() {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
+                                onClick={handleAuth}
 
                             >
                                 {formState === 0 ? "Login " : "Register"}
@@ -176,7 +171,6 @@ export default function Authenticate() {
             </Grid>
 
             <Snackbar
-
                 open={open}
                 autoHideDuration={4000}
                 message={message}

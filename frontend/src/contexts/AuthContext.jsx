@@ -1,5 +1,6 @@
-import { createContext, useState, useNavigate } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { login, register } from '../services/authServices'
+import { useNavigate } from 'react-router-dom'
 
 const AuthContext = createContext({})
 
@@ -9,10 +10,21 @@ export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const navigate = useNavigate()
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await getCurrentUser();
+                setUser(response.data);
+            } catch {
+                setUser(null);
+            }
+        };
+        fetchUser();
+    }, []);
+
     const handleLogin = async (credential) => {
         try {
-            const data = await login(credential)
-            setUser(data.user)
+            await login(credential)
             navigate("/home")
         } catch (error) {
             throw error
@@ -21,9 +33,8 @@ export const AuthContextProvider = ({ children }) => {
 
     const handleRegister = async (userData) => {
         try {
-            const data = await register(userData)
-            setUser(data.user)
-            navigate("/home")
+            const message = await register(userData)
+            return message
         } catch (error) {
             throw error
         }
