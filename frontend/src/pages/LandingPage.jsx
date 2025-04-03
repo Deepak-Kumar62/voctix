@@ -17,7 +17,7 @@ const LandingPage = () => {
             <div className='landingpage-main-container'>
                 <div>
                     <h3><span style={{ color: "#FF9839" }}>Connect</span> with your loved ones.</h3>
-                    <p>Cover a distance by Apna Video Call</p>
+                    <p>Cover a distance by Voctix Video Call</p>
                     <div role='button'>
                         <Link to={"/auth"}>Get Started</Link>
                     </div>
